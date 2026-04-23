@@ -5,7 +5,10 @@ app = Flask(__name__)
 
 VERIFY_TOKEN = "mi_token_123"
 
-# 🔹 Verificación de Meta (esto es lo que preguntabas)
+@app.route("/")
+def home():
+    return "Servidor Funcionando!"
+
 @app.route("/webhook", methods=["GET"])
 def verify():
     token = request.args.get("hub.verify_token")
