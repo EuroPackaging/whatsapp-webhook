@@ -19,11 +19,25 @@ def verify():
         return challenge
     return "Error de verificación", 403
 
-# 🔹 Recepción de mensajes
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    data = request.json
-    print(json.dumps(data, indent=2))  # Imprime el mensaje recibido en la consola
+    print("🔥 NUEVO EVENTO 🔥")
+
+    # raw body
+    print("RAW DATA:")
+    print(request.data)
+
+    # headers
+    print("HEADERS:")
+    print(dict(request.headers))
+
+    # json parseado
+    try:
+        data = request.get_json()
+        print("JSON PARSEADO:")
+        print(json.dumps(data, indent=2))
+    except Exception as e:
+        print("ERROR PARSEANDO JSON:", e)
 
     return jsonify({"status": "ok"})
 
