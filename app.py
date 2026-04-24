@@ -1,15 +1,20 @@
 from flask import Flask, request, jsonify
 import os
-import json
+import logging
 
 app = Flask(__name__)
 
+# 🔥 Logging bien configurado para Render
+logging.basicConfig(level=logging.INFO)
+
 VERIFY_TOKEN = "mi_token_123"
 
+# 🔹 Ruta base
 @app.route("/")
 def home():
-    return "Servidor Funcionando!"
+    return "VERSION NUEVA! Servidor funcionando 🚀"
 
+# 🔹 Verificación de Meta
 @app.route("/webhook", methods=["GET"])
 def verify():
     token = request.args.get("hub.verify_token")
@@ -19,27 +24,19 @@ def verify():
         return challenge
     return "Error de verificación", 403
 
+# 🔹 Recepción de mensajes
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    print("🔥 NUEVO EVENTO 🔥")
+    logging.info("🔥 NUEVO EVENTO 🔥")
 
-    # raw body
-    print("RAW DATA:")
-    print(request.data)
-
-    # headers
-    print("HEADERS:")
-    print(dict(request.headers))
-
-    # json parseado
     try:
         data = request.get_json()
-        print("JSON PARSEADO:")
-        print(json.dumps(data, indent=2))
+        logging.info(f"JSON recibido: {data}")
     except Exception as e:
-        print("ERROR PARSEANDO JSON:", e)
+        logging.error(f"Error parseando JSON: {e}")
 
     return jsonify({"status": "ok"})
 
+# 🔹 Run para Render
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
