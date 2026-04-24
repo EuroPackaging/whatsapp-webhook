@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+import json
 
 app = Flask(__name__)
 
@@ -22,7 +23,7 @@ def verify():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
-    print("Mensaje recibido:", data)
+    print(json.dumps(data, indent=2))  # Imprime el mensaje recibido en la consola
 
     return jsonify({"status": "ok"})
 
