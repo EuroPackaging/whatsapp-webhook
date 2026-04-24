@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 import logging
+import requests 
 
 app = Flask(__name__)
 
@@ -25,15 +26,23 @@ def verify():
     return "Error de verificación", 403
 
 # 🔹 Recepción de mensajes
+import requests
+
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    logging.info("🔥 NUEVO EVENTO 🔥")
+    data = request.get_json()
 
     try:
-        data = request.get_json()
-        logging.info(f"JSON recibido: {data}")
+        # enviar a n8n
+        requests.post(
+            "http://localhost:5678/webhook-test/whatsapp",
+            json=data
+        )
+
+        logging.info("📤 Enviado a n8n")
+
     except Exception as e:
-        logging.error(f"Error parseando JSON: {e}")
+        logging.error(f"Error enviando a n8n: {e}")
 
     return jsonify({"status": "ok"})
 
