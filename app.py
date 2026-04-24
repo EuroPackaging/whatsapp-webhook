@@ -35,7 +35,7 @@ def webhook():
     try:
         # enviar a n8n
         requests.post(
-            "http://0.0.0.0:5678/webhook-test/whatsapp",
+            "https://n8n-service-jelf.onrender.com/webhook/whatsapp",
             json=data
         )
 
