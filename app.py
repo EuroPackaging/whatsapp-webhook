@@ -35,7 +35,7 @@ def webhook():
     try:
         # enviar a n8n
         requests.post(
-            "http://localhost:5678/webhook-test/whatsapp",
+            "http://0.0.0.0:5678/webhook-test/whatsapp",
             json=data
         )
 
